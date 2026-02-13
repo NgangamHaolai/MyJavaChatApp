@@ -7,7 +7,7 @@ function LoginPage()
 {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+    const [error, setError] = useState({});
     const nav = useNavigate();
 
     const handleLogin = async ()=>
@@ -28,8 +28,10 @@ function LoginPage()
         }
         catch(error)
         {
-            setError("Login Failed: Invalid credentials or server error!");
-            console.log(error);
+            console.log(error.response);
+            console.log(error.response.data);
+            console.log(error.response.data.error);
+            setError(error.response.data);
         }
     }
     return(<>
@@ -38,6 +40,7 @@ function LoginPage()
 
             <div className={styles.inputContainer}>
                 <label>Username:</label>
+                {error.username && <p className={styles.error}>**{error.username}**</p>}
                 <input
                     type='text'
                     value={username}
@@ -47,6 +50,7 @@ function LoginPage()
 
             <div className={styles.inputContainer}>
                 <label>Password:</label>
+                {error.password && <p className={styles.error}>**{error.password}**</p>}
                 <input
                     name='password'
                     type='password'
@@ -54,6 +58,7 @@ function LoginPage()
                     onChange={(e)=>(setPassword(e.target.value))}
                 />
             </div>
+            {error.error && <p className={styles.error}>**{error.error}**</p>}
             <button onClick={handleLogin} className={styles.loginButton}>
                 Login
             </button>

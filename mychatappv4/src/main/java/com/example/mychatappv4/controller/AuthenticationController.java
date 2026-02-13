@@ -1,8 +1,8 @@
 package com.example.mychatappv4.controller;
 
 import com.example.mychatappv4.dto.AuthenticationResponse;
-import com.example.mychatappv4.model.RegisterUserRequest;
-import com.example.mychatappv4.model.User;
+import com.example.mychatappv4.dto.LoginUserRequest;
+import com.example.mychatappv4.dto.RegisterUserRequest;
 import com.example.mychatappv4.service.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class AuthenticationController
         return ResponseEntity.ok(authService.register(request));
     }
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody User request)
+    public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody LoginUserRequest request)
     {
         return ResponseEntity.ok(authService.authenticate(request));
     }

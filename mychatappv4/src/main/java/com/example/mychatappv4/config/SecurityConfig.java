@@ -38,22 +38,22 @@ public class SecurityConfig
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exception -> exception
-//                        .authenticationEntryPoint((request, response, authException) -> {
-//                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//                            response.setContentType("application/json");
-//                            response.getWriter().write("{\"error\":\"Unauthorized\"}");
-//                        })
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");    // Without this, Spring sends default HTML error page.
+                            response.getWriter().write("{\"error\":\"invalid username or password\"}");
+                        })
                         .accessDeniedHandler(((request, response, accessDeniedException) -> {
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                             response.setContentType("application/json");
-                            response.getWriter().write("{\"error\":\"Forbidden\"}");
+                            response.getWriter().write("{\"error\":\"Access Forbidden\"}");
                         }))
                 )
                 .authorizeHttpRequests(auth->auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // because browsers, not users, send OPTIONS
-//                        .requestMatchers("/auth/**").permitAll()    // because authentication must happen before authentication exists
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/register").permitAll()
+//                        .requestMatchers("/auth/**").permitAll()    //
+                        .requestMatchers("/login").permitAll()  // because authentication must happen before authentication exists
+                        .requestMatchers("/register").permitAll()   // because authentication must happen before authentication exists
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) //This puts your JWT filter into Spring Security’s filter chain.

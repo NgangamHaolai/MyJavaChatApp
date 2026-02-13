@@ -1,48 +1,83 @@
+*
+{
+    background-color: #031d62;
+}
 .loginContainer
 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 50px;
-    /* border: 1px solid black; */
+    margin: auto;
+    margin-top: 100px;
+    border-radius: 5px;
+    background-color: #1e0b84;
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
 }
 h2
 {
     margin-bottom: 20px;
+    color: white;
+    background: none;
 }
 .inputContainer
 {
     width: 300px;
     margin-bottom: 15px;
-    /* border: 1px solid black; */
+    background: none;
 }
 .inputContainer label
 {
-    display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    color: white;
+    background: none;
 }
 .inputContainer input
 {
-    /* why 300px gives extra length? */
-    width: 283px;   
+    width: 283px;
     padding: 8px;
     margin-top: 5px;
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border: none;
+    font-family:'Courier New', Courier, monospace;
+    background-color: white;
+    font-weight: bold;
+    font-size: medium;
+}
+.inputContainer input:focus
+{
+    /* border-color: #3070e8; */
+    border: none;
+    /* background-color: rgb(114, 48, 220); */
+    background-color: #031d62;
+    outline: none;
+    color: white;
 }
 .loginButton
 {
     width: 300px;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: blue;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
 }
 .loginButton:hover
 {
-    background-color: #45a049;;
+    /* background-color: #245ae4; */
+    background-color: #2554d7;
+    box-shadow: 0 0 10px 2px rgb(255, 255, 255);
+}
+.error
+{
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 0;
+    margin: 0;
+    background: none;
 }

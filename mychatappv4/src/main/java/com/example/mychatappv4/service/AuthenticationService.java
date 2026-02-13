@@ -1,31 +1,38 @@
 package com.example.mychatappv4.service;
 
 import com.example.mychatappv4.dto.AuthenticationResponse;
-import com.example.mychatappv4.model.RegisterUserRequest;
+import com.example.mychatappv4.dto.LoginUserRequest;
+import com.example.mychatappv4.dto.RegisterUserRequest;
 import com.example.mychatappv4.model.User;
 import com.example.mychatappv4.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Slf4j
 @Service
 public class AuthenticationService
 {
     private final UserRepository userRepository;
+    private final UserService userService;
     private final JwtService jwtService;
-    private PasswordEncoder passwordEncoder;
-    private AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
     private final ObjectMapper objectMapper;
 
-    AuthenticationService(UserRepository userRepository, JwtService jwtService, ObjectMapper objectMapper) {
+    AuthenticationService(UserRepository userRepository, UserService userService, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, ObjectMapper objectMapper)
+    {
         this.userRepository = userRepository;
+        this.userService = userService;
         this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
         this.objectMapper = objectMapper;
     }
 
@@ -48,13 +55,14 @@ public class AuthenticationService
         log.info("registration done.");
         return new AuthenticationResponse(token);
     }
-    public AuthenticationResponse authenticate(User request)
-
+    public AuthenticationResponse authenticate(LoginUserRequest request)
     {
+        log.info("inside authenticate() {}", request);
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         User user = (User) authentication.getPrincipal();   // alternate way. saves one DB call
 //        String username = request.getUsername();
-//        User user = userRepository.findByUserName(username);
+//        User user = (User) userService.loadUserByUsername(username);
+        log.info("User: {}", user);
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
     }

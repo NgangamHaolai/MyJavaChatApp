@@ -1,50 +1,78 @@
+h2
+{
+    background: none;
+    color: white;
+}
 .registerContainer
 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: auto;
     margin-top: 5rem;
+    border-radius: 5px;
+    background-color: #1e0b84;
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
+    width: 450px;
 }
 .inputContainer
 {
     display: flex;
     flex-direction: column;
     margin-bottom: 1rem;
-    /* border: 1px salmon solid; */
-    width: 330px;
+    background: none;
+    width: 360px;
 }
 .inputContainer label
 {
-    margin-bottom: 0.5rem;
     font-weight: bold;
+    background: none;
+    color: white;
 }
+
 .inputContainer input
 {
     padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
+    font-size: medium;
+    font-weight: bold;
+    margin-top: 5px;
+    border: none;
     border-radius: 4px;
+    font-family:'Courier New', Courier, monospace;
+    background-color: white;
+}
+.inputContainer input:focus
+{
+    border: none;
+    background-color: #031d62;
+    outline: none;
+    color: white;
 }
 .registerContainer button
 {
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     color: white;
-    background-color: #007BFF;
+    /* background-color: #007BFF; */
+    background-color: blue;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     width: 210px;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
 }
 .registerContainer button:hover
 {
-    background-color: #0056b3;
+    background-color: #2554d7;
+    box-shadow: 0 0 10px 2px rgb(255, 255, 255); 
+    /* 3rd is blur-radius 4th is spread-radius */
 }
 .error
 {
     color: red;
     font-size: 0.9rem;
-    margin-top: 0;
-    margin: 0;
-    /* border: 1px solid red; */
+    margin-top: 0px;
+    margin-bottom: 5px;
+    background: none;
 }

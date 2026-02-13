@@ -50,9 +50,9 @@ public class JwtService
     public String generateToken(User user)
     {
         return Jwts.builder()
-                .setSubject(user.getName())
+                .setSubject(user.getUsername())
                 .claim("id", user.getId())
-                .claim("userName", user.getUsername())
+//                .claim("userName", user.getUsername())    // don't need it as subject as username is the best practice
                 .setExpiration(new Date(System.currentTimeMillis() + 24*60*60*1000))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .signWith(getSigninKey())

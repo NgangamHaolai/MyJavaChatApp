@@ -1,4 +1,4 @@
-package com.example.mychatappv4.model;
+package com.example.mychatappv4.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,9 +8,9 @@ import org.hibernate.validator.constraints.Length;
 @Data
 public class RegisterUserRequest
 {
-    @Length(min = 3, max = 15, message = "name should be min-3 chars and max-15 char")
-    @NotBlank(message = "name cannot be empty")
-    private String name;
+//    @Length(min = 3, max = 15, message = "name should be min-3 chars and max-15 char")
+//    @NotBlank(message = "name cannot be empty")
+//    private String name;
 
     @Length(min = 3, max = 15, message = "username should be min-3 chars and max-15 char")
     @NotBlank(message = "username cannot be empty")

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 
 function RegisterPage()
 {
-    const [name, setName] = useState("");
+    // const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -31,13 +31,13 @@ function RegisterPage()
             }
             else
             {            
-                const response = await axios.post("http://localhost:8080/register",{name, username, email, password});
+                const response = await axios.post("http://localhost:8080/register",{username, email, password, confirmPassword});
                 console.log('response data:', response);
                 if(response.data.token)
                 {
                     localStorage.setItem("token", response.data.token);
                     console.log('registration successful! Token saved to local storage.');
-                    console.log("User:", name,"Username:", username, "Email:", email,);
+                    console.log("Username:", username, "Email:", email,);
                     navigate("/users");
                 }
                 else
@@ -74,8 +74,8 @@ function RegisterPage()
     }
     return (
         <div className={styles.registerContainer}>
-            <h1>Registration Page</h1>
-            <div className={styles.inputContainer}>
+            <h2>Register</h2>
+            {/* <div className={styles.inputContainer}>
                 <label>Name</label>
                 {errors.name && <p className={styles.error}>**{errors.name}**</p>}
                 <input 
@@ -83,7 +83,7 @@ function RegisterPage()
                     value={name}
                     onChange={(e)=>(setName(e.target.value))}
                 />
-            </div>
+            </div> */}
             <div className={styles.inputContainer}>
                 <label>Username:</label>
                 {errors.username && <p className={styles.error}>**{errors.username}**</p>}
@@ -114,7 +114,7 @@ function RegisterPage()
             <div className={styles.inputContainer}>
                 <label>Confirm Password:</label>
                 {/* {passwordMatchError && <p className={styles.error}>**password mismatch**</p>} */}
-                {/* {errors.confirmPassword && <p className={styles.error}>**{errors.confirmPassword}**</p>} */}
+                {errors.confirmPassword && <p className={styles.error}>**{errors.confirmPassword}**</p>}
                 <input 
                 type="password"
                 value={confirmPassword}
