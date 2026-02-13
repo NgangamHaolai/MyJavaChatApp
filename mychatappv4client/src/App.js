@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 import LoginPage from "./Pages/LoginPage.js";
 import Users from 'Pages/Users.js';
+import RegisterPage from 'Pages/RegisterPage.js';
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <Routes>
         <Route path='/login' element={<LoginPage/>}></Route>
         <Route path='/users' element={<Users/>}></Route>
+        <Route path='register' element={<RegisterPage/>}></Route>
       </Routes>
     </BrowserRouter>
   );

@@ -19,7 +19,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
 {
     private final JwtService jwtService;
     private final UserService userService;
-
+    // single constructor so we don't need @Autowired annotation
     public JwtAuthenticationFilter(JwtService jwtService, UserService userService) {
         this.jwtService = jwtService;
         this.userService = userService;
