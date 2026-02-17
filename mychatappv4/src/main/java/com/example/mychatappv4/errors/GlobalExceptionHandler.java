@@ -28,6 +28,7 @@ public class GlobalExceptionHandler
         {
             errors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
+        log.warn("Validation Errors: {}",errors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
@@ -50,5 +51,29 @@ public class GlobalExceptionHandler
     {
         log.warn("Authentication Failed: {}", exception.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Invalid username or password"));
+    }
+    @ExceptionHandler(DuplicateUsernameException.class)
+    public ResponseEntity<Map<String, String>> duplicateUsernameException(DuplicateUsernameException exception)
+    {
+        log.warn("duplicate username: {}",exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("field","username","message", exception.getMessage()));
+    }
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<Map<String, String>> duplicateEmailException(DuplicateEmailException exception)
+    {
+        log.warn("duplicate email: {}", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("field","email","message", exception.getMessage()));
+    }
+    @ExceptionHandler(PasswordMismatchException.class)
+    public ResponseEntity<Map<String, String>> passwordMismatchException(PasswordMismatchException exception)
+    {
+        log.warn("Password mismatch: {}", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("field","confirmPassword","message", exception.getMessage()));
+    }
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<Map<String, String>> invalidTokenException(InvalidTokenException exception)
+    {
+        log.warn("invalid token: {}", exception);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("field", "invalidToken", "message", exception.getMessage()));
     }
 }

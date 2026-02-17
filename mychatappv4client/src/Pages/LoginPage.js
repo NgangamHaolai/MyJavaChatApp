@@ -7,7 +7,7 @@ function LoginPage()
 {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState({});
+    const [errors, setErrors] = useState({});
     const nav = useNavigate();
 
     const handleLogin = async ()=>
@@ -23,7 +23,7 @@ function LoginPage()
             }
             else
             {
-                setError("Login Failed: Token not received!");
+                setErrors("Login Failed: Token not received!");
             }
         }
         catch(error)
@@ -31,7 +31,7 @@ function LoginPage()
             console.log(error.response);
             console.log(error.response.data);
             console.log(error.response.data.error);
-            setError(error.response.data);
+            setErrors(error.response.data);
         }
     }
     return(<>
@@ -40,7 +40,7 @@ function LoginPage()
 
             <div className={styles.inputContainer}>
                 <label>Username:</label>
-                {error.username && <p className={styles.error}>**{error.username}**</p>}
+                {errors.username && <p className={styles.error}>**{errors.username}**</p>}
                 <input
                     type='text'
                     value={username}
@@ -50,7 +50,7 @@ function LoginPage()
 
             <div className={styles.inputContainer}>
                 <label>Password:</label>
-                {error.password && <p className={styles.error}>**{error.password}**</p>}
+                {errors.password && <p className={styles.error}>**{errors.password}**</p>}
                 <input
                     name='password'
                     type='password'
@@ -58,7 +58,7 @@ function LoginPage()
                     onChange={(e)=>(setPassword(e.target.value))}
                 />
             </div>
-            {error.error && <p className={styles.error}>**{error.error}**</p>}
+            {errors.error && <p className={styles.error}>**{errors.error}**</p>}
             <button onClick={handleLogin} className={styles.loginButton}>
                 Login
             </button>

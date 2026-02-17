@@ -41,12 +41,12 @@ public class SecurityConfig
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.setContentType("application/json");    // Without this, Spring sends default HTML error page.
-                            response.getWriter().write("{\"error\":\"invalid username or password\"}");
+                            response.getWriter().write("{\"unauthorized\":\"invalid username or password\"}");
                         })
                         .accessDeniedHandler(((request, response, accessDeniedException) -> {
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                             response.setContentType("application/json");
-                            response.getWriter().write("{\"error\":\"Access Forbidden\"}");
+                            response.getWriter().write("{\"forbidden\":\"Access Forbidden\"}");
                         }))
                 )
                 .authorizeHttpRequests(auth->auth
@@ -54,6 +54,8 @@ public class SecurityConfig
 //                        .requestMatchers("/auth/**").permitAll()    //
                         .requestMatchers("/login").permitAll()  // because authentication must happen before authentication exists
                         .requestMatchers("/register").permitAll()   // because authentication must happen before authentication exists
+                        .requestMatchers("/ws/**").permitAll()
+//                        .requestMatchers("/api/**").permitAll()   // they must be authenticated. Only logged in users must see the chat.
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) //This puts your JWT filter into Spring Security’s filter chain.

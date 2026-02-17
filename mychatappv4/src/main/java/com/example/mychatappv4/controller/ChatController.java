@@ -1,13 +1,19 @@
 package com.example.mychatappv4.controller;
 
+import com.example.mychatappv4.dto.AvatarRequest;
+import com.example.mychatappv4.dto.AvatarResponse;
+import com.example.mychatappv4.dto.UserResponse;
 import com.example.mychatappv4.model.MessageEntity;
 import com.example.mychatappv4.repository.MessageRepository;
+import com.example.mychatappv4.repository.UserRepository;
+import com.example.mychatappv4.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,10 +22,18 @@ import java.util.List;
 @Slf4j
 public class ChatController
 {
+    private final MessageRepository messageRepository;
+//    private final UserRepository userRepository;
+    private final UserServiceImpl userService;
+    private final SimpMessagingTemplate simpMessagingTemplate; // Power Tool // It allows you to send messages programmatically.
+
     @Autowired
-    public MessageRepository messageRepository;
-    @Autowired
-    public SimpMessagingTemplate simpMessagingTemplate; // Power Tool // It allows you to send messages programmatically.
+    public ChatController(MessageRepository messageRepository, UserRepository userRepository, UserServiceImpl userService, SimpMessagingTemplate simpMessagingTemplate) {
+        this.messageRepository = messageRepository;
+//        this.userRepository = userRepository;
+        this.userService = userService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
+    }
 
     @MessageMapping("/chat")
     public void sendMessage(MessageEntity message)
@@ -35,9 +49,22 @@ public class ChatController
         simpMessagingTemplate.convertAndSend("/topic/messages/" +message.getSender());
     }
 
-    @MessageMapping("/api/messages")
+    @GetMapping("/api/messages")
     public List<MessageEntity> getMessages(@RequestParam String sender, @RequestParam String receiver)
     {
         return messageRepository.findMessages(sender, receiver);
+    }
+    @GetMapping("/api/users")
+    public List<UserResponse> getUsers()
+    {
+        return userService.getUsers();
+    }
+    @PutMapping("/api/avatar")
+    public ResponseEntity<AvatarResponse> setAvatar(@RequestBody AvatarRequest request)
+    {
+        log.info("avatar: {}", request);
+        AvatarResponse response = userService.updateUserAvatar(request);
+        log.info("response: {}", response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

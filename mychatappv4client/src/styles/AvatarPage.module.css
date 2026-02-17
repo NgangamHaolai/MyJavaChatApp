@@ -1,0 +1,71 @@
+.avatarContainer 
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    margin-top: 2rem;
+    /* border: 1px solid black; */
+    border-radius: 30px;
+    box-shadow: 0 0 10px 20px rgba(0, 0, 0, 0.1);
+    background-color: #1e0b84;
+    width: fit-content;
+    height: auto;
+    padding: 2rem;
+}
+.avatarsGrid
+{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 2rem;
+    background: none;
+}
+.avatarPreview
+{
+    background: none;
+}
+.avatarPreview img
+{   
+    border-radius: 100px;
+    width: 200px;
+}
+.avatarPreview img:hover
+{
+    cursor: pointer;
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+    box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.5);
+}
+.selectedAvatarPreview
+{
+    background: none;
+}
+.selectedAvatarPreview img
+{
+    width: 200px;
+    border-radius: 100px;
+    transform: scale(1.05);
+    background: none;
+    box-shadow: 0 0 20px 10px rgb(35, 120, 211);
+}
+.submitButton button
+{
+    display: flex;
+    margin: auto;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(15, 15, 239);
+    color: white;
+    font-family: Century Gothic;
+    font-weight: 800;
+}
+.submitButton button:hover
+{
+    cursor: pointer;
+    background-color: rgb(9, 9, 195);
+    box-shadow: 0 0 10px 5px rgb(169, 162, 162);
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}

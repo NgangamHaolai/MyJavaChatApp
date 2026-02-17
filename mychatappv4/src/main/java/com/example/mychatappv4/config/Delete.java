@@ -1,7 +1,7 @@
 package com.example.mychatappv4.config;
 
 import com.example.mychatappv4.service.JwtService;
-import com.example.mychatappv4.service.UserService;
+import com.example.mychatappv4.service.UserServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,9 +20,9 @@ class Delete extends OncePerRequestFilter
 {
     private final JwtService jwtService;
     private final User user;
-    private final UserService userService;
+    private final UserServiceImpl userService;
     @Autowired
-    Delete(JwtService jwtService, User user, UserService userService) {
+    Delete(JwtService jwtService, User user, UserServiceImpl userService) {
         this.jwtService = jwtService;
         this.user = user;
         this.userService = userService;

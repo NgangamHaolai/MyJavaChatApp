@@ -1,6 +1,8 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useState, useRef, useEffect } from "react";
+import styles from '../styles/ChatPage.module.css';
+import { useNavigate } from "react-router-dom";
 import SockJS from 'sockjs-client'; 
 // SockJS-client is a JavaScript library that provides a WebSocket-like interface for creating low-latency, full-duplex, cross-domain communication channels between a browser and a web server.
 import { Stomp } from '@stomp/stompjs';
@@ -16,7 +18,8 @@ function Chat({user, onBack})
     const [messages, setMessages] = useState([]);
     const [newMessages, setNewMessages] = useState("");
     const stompClientRef = useRef(null);
-    const [currentUser, setCurrentUser] = useState("");
+    const [loggedInUser, setLoggedInUser] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => // Decode JWT to get currentUser username
     {
@@ -26,7 +29,7 @@ function Chat({user, onBack})
             try
             {
                 const decoded = jwtDecode(token);
-                setCurrentUser(decoded.sub);
+                setLoggedInUser(decoded.sub);
                 console.log('decode.sub ',decoded);
             }
             catch(error)
@@ -40,16 +43,28 @@ function Chat({user, onBack})
     {
         const fetchMessages = async()=>
         {
-            if(currentUser && user.username)
+            if(loggedInUser && user)
             {
-                try{
-                    const response = await axios.get(`http://localhost:8080/api/messages?sender=${currentUser}&receiver=${user.username}`);
-                    // if(!response.ok) throw new Error("Failed to fetch messages");
-                    // const data = response.json();
-                    const sortedData = response.data.sort(
-                        (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-                    );
-                    setMessages(sortedData);
+                try
+                {
+                    const token = localStorage.getItem("token");
+                    if(token)
+                    {
+                        const response = await axios.get(`http://localhost:8080/api/messages?sender=${loggedInUser}&receiver=${user.username}`,
+                            {headers: { Authorization: `Bearer ${token}` }}
+                        );
+                        console.log(response.data);
+                        
+                        const sortedData = response.data.sort(
+                            (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+                        );
+                        setMessages(sortedData);
+                    }
+                    else
+                    {
+                        console.log("No token found. User might not be logged in.");
+                        navigate('/login'); // Redirect to login if no token is found
+                    }
                 }
                 catch(error)
                 {
@@ -58,44 +73,53 @@ function Chat({user, onBack})
             }
         }   
         fetchMessages();
-    }, [currentUser, user]);
+    }, [loggedInUser, user]);
 
     useEffect(()=>  // WebSocket connection setup
     {
         const connect = ()=>
         {
-            console.log('trying to connect...');
-            const socket = new SockJS(`http://localhost:8080/ws`);
-            const stompClient = Stomp.over(socket);
-            stompClientRef.current(stompClient);
-
-            stompClient.connect({}, ()=>
+            try
             {
-                console.log("Conected to WebSocket.");
-                // Subscribe to messages for current user
-                stompClient.subscribe(`/topic/messages/${currentUser}`, (message)=>
+                const token = localStorage.getItem("token");
+                console.log('trying to connect...');
+                const socket = new SockJS(`http://localhost:8080/ws`,
+                    // { headers: { Authorization: `Bearer ${token}`}}
+                );
+                const stompClient = Stomp.over(socket);
+                stompClientRef.current = stompClient;
+                stompClient.connect({}, ()=>
                 {
-                    const receivedMessage = JSON.parse(message.body);
-                    console.log("Received message: ",receivedMessage);
-
-                    // check if the mesasge is between the current user and the selected user
-                    if((receivedMessage.sender === user.username && receivedMessage.receiver === currentUser) ||
-                       (receivedMessage.sender === currentUser && receivedMessage.receiver === user.username))
+                    console.log("Conected to WebSocket.");
+                    // Subscribe to messages for current user
+                    stompClient.subscribe(`/topic/messages/${loggedInUser}`, (message)=>
                     {
-                        setMessages((prevMessages) => 
+                        const receivedMessage = JSON.parse(message.body);
+                        console.log("Received message: ",receivedMessage);
+
+                        // check if the mesasge is between the current user and the selected user
+                        if((receivedMessage.sender === user.username && receivedMessage.receiver === loggedInUser) ||
+                        (receivedMessage.sender === loggedInUser && receivedMessage.receiver === user.username))
                         {
-                            const exists = prevMessages.some(msg => msg.id === receivedMessage.id);
-                            return exists ? prevMessages : [...prevMessages, receivedMessage];
-                        });
-                    }
+                            setMessages((prevMessages) => 
+                            {
+                                const exists = prevMessages.some(msg => msg.id === receivedMessage.id);
+                                return exists ? prevMessages : [...prevMessages, receivedMessage];
+                            });
+                        }
+                    });
+                }, 
+                (error)=>
+                {
+                    console.log("WebSocket connection error: ", error);
                 });
-            }, 
-            (error)=>
+            }
+            catch(error)
             {
                 console.log("WebSocket connection error: ", error);
-            });
+            }
         };
-        if(currentUser && user)
+        if(loggedInUser && user)
         {
             connect();
         }
@@ -110,14 +134,14 @@ function Chat({user, onBack})
                 });
             }
         };
-    }, [currentUser, user]);
+    }, [loggedInUser, user]);
     // Handle sending new messages
     const handleSendMessage = ()=>
     {
         if(newMessages.trim() === "") return;
         const messageObject = {
             id: Date.now(), // Temporary ID, replace with server-generated ID if needed
-            sender: currentUser,
+            sender: loggedInUser,
             receiver: user.username,
             message: newMessages,
             timestamp: new Date().toISOString()
@@ -141,12 +165,17 @@ function Chat({user, onBack})
     };
 
     return(
-    <div className="chat-screen">
-        <button onClick={onBack} className="back-button">Back</button>
+    <div className={styles.chatContainer}>
+        <div className={styles.chatBar}>
+            <div className={styles.profilePic}>
+                <img src="https://i.etsystatic.com/48111938/r/isla/448e06/68047008/isla_200x200.68047008_9oodzao2.jpg" alt="avatar.jpg"></img>
+            </div>
+            <div className={styles.profileName}>{user}</div>
+        {/* <button onClick={onBack} className="back-button">Back</button>
         <h2>Chat with {user.name}</h2>
         <div className="chat-messages">
                 {messages.map((msg, index)=>(
-                    <div key={index} className={`message ${msg.sender === currentUser ? "me" : "them"}`}>
+                    <div key={index} className={`message ${msg.sender === loggedInUser ? "me" : "them"}`}>
                         <strong>{msg.sender}:</strong>{msg.message}
                         <div>{new Date(msg.timestamp).toLocaleTimeString()}</div>
                     </div>
@@ -158,6 +187,20 @@ function Chat({user, onBack})
                 value={newMessages} 
                 onChange={(e) => setNewMessages(e.target.value)}>
             </input>
+            <button onClick={handleSendMessage}>Send</button>
+        </div> */}
+        </div>
+        <div className={styles.chatMessages}>
+            <div className={styles.senderBox}>
+                hey how are you doing?
+            </div>
+            <div className={styles.receiverBox}>
+                I'm doing good, how about you?
+            </div>
+        </div>
+        <div className={styles.textContainer}>
+            <div className={styles.emojiContaier}>:)</div>
+            <input type="text" placeholder="Type a message" value={newMessages} onChange={(e)=> setNewMessages(e.target.value)}></input>
             <button onClick={handleSendMessage}>Send</button>
         </div>
     </div>

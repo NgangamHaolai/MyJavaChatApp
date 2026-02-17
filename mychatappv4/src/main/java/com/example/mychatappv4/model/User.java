@@ -28,6 +28,9 @@ public class User implements UserDetails    // a Spring Security interface // re
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "avatar")
+    private String avatar;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() // inbuilt method from UserDetails
     {

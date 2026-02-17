@@ -1,0 +1,92 @@
+.chatContainer
+{
+    border: 1px solid black;
+    /* padding: 10px; */
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+.chatBar
+{
+    display: flex;
+    /* margin: auto; */
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    box-sizing: border-box;
+    height: 80px;
+    /* background-color: #091e58; */
+    /* background-color: rgb(6, 8, 69); */
+    background-color: rgb(6, 8, 69);
+    /* background-color: white; */
+    border: 1px solid white;
+    color: white;
+}
+.profilePic
+{
+    /* border: 1px solid blue; */
+    /* border-radius: 50px;
+    width:4rem;
+    height: 4rem;
+    text-align: center; */
+    background: none;
+}
+.profilePic img
+{
+    width: 3.2em;
+    height: 3.2rem;
+    border-radius: 50px;
+    margin-left: 1rem;
+}
+.profilePic img:hover
+{
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+.profileName
+{
+    /* border: 1px solid green; */
+    margin-left: 1rem;
+    padding: 0.5rem;
+    font-family: Ink Free;
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: none;
+}
+.chatMessages
+{
+    border: 1px solid white;
+    box-sizing: border-box; /* occupy entire width of parent container */
+    padding: 1rem;
+    overflow-y: auto; /* Enable vertical scrolling */
+    flex: 1;    /* Allow the chatMessages to take up remaining space */
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #190e97; 
+}
+::-webkit-scrollbar-thumb {
+  background: #ffffff;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+.textContainer
+{
+    display: flex;
+    /* border: 1px solid white; */
+    padding: 1rem;
+    background-color: #091e58;
+}
+.emojiContainer
+{
+    display: flex;
+    border: 1px solid white;
+    padding: 0.5rem;
+    background-color: #ffffff;
+}
