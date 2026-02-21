@@ -1,6 +1,6 @@
 .chatContainer
 {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     /* padding: 10px; */
     display: flex;
     flex-direction: column;
@@ -20,7 +20,7 @@
     /* background-color: rgb(6, 8, 69); */
     background-color: rgb(6, 8, 69);
     /* background-color: white; */
-    border: 1px solid white;
+    /* border: 1px solid white; */
     color: white;
 }
 .profilePic
@@ -34,10 +34,10 @@
 }
 .profilePic img
 {
-    width: 3.2em;
-    height: 3.2rem;
+    width: auto;
+    height: 100%;
     border-radius: 50px;
-    margin-left: 1rem;
+    margin-left: 0.5rem;
 }
 .profilePic img:hover
 {
@@ -56,11 +56,57 @@
 }
 .chatMessages
 {
-    border: 1px solid white;
+    color: white;
+    /* border: 1px solid white; */
     box-sizing: border-box; /* occupy entire width of parent container */
     padding: 1rem;
     overflow-y: auto; /* Enable vertical scrolling */
     flex: 1;    /* Allow the chatMessages to take up remaining space */
+}
+.senderBox
+{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #1708c1;
+    border-radius: 5px;
+    background-color: #1708c1;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    margin-left: auto;
+    width: fit-content;
+    max-width: 650px;
+}
+.receiverBox
+{
+    border: 1px solid #190e97;
+    flex-direction: column;
+    border-radius: 5px;
+    background-color:#190e97;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    /* margin-right: auto; */
+    width: fit-content;
+    max-width: 650px;
+}
+.receiverBox p
+{
+    display: flex;
+    justify-content: end;
+    background: none;
+    margin: 0;
+    /* margin-left: auto; */
+}
+.senderBox p
+{
+    background: none;
+    margin: 0;
+    margin-left: auto;
 }
 ::-webkit-scrollbar {
   width: 5px;
@@ -79,14 +125,55 @@
 .textContainer
 {
     display: flex;
-    /* border: 1px solid white; */
     padding: 1rem;
     background-color: #091e58;
+    /* box-sizing: border-box; */
 }
-.emojiContainer
+.emojiButton
 {
-    display: flex;
-    border: 1px solid white;
+    border: none;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-right: 1rem;
+    background-color: #190e97;
+}
+.emojiButton:hover
+{
+    cursor: pointer;
+}
+.textContainer input
+{
+    margin: auto;
+    width: 100%;
+    padding: 1rem;
+    color: white;
+    border: none;
+    background-color: #190e97;
+    border-radius: 10px;
+    /* font-family: Ink Free; */
+    font-family: 'Courier New', Courier, monospace;
+    font-size: medium;
+    font-weight: 600;
+}
+.textContainer input:focus
+{
+    background-color: #1708c1;
+    border: none;
+    box-shadow: 0 0 1px 1px rgb(85, 95, 237);
+    outline: none;
+}
+.sendButton
+{
     padding: 0.5rem;
-    background-color: #ffffff;
+    margin-left: 1rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #190e97;
+    color: white;
+    font-size: medium;
+}
+.sendButton:hover
+{
+    cursor: pointer;
+    background-color: #1708c1;
 }

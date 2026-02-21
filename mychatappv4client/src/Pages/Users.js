@@ -8,8 +8,9 @@ import { useNavigate } from "react-router-dom";
 function Users()
 {
     const [users, setUsers] = useState([]);
-    const [loggedInUser, setLoggedInUser] = useState(null);
+    const [loggedInUser, setLoggedInUser] = useState("");
     const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedUserProfile, setSelectedUserProfile] = useState("");
     const navigate = useNavigate();
     
     useEffect(()=>
@@ -46,13 +47,15 @@ function Users()
             if(error.response.data.unauthorized)
             {
                 alert("Unauthorized! Please login again.");
-
+                navigate("/login");
             }
+
         }
     }
     const handleSelectedUser = (user)=>
     {
-        setSelectedUser(user);
+        setSelectedUser(user.username);
+        setSelectedUserProfile(user.avatar);
         console.log("user:",user);
     }
 
@@ -78,9 +81,11 @@ function Users()
                 ))}
                 </div>
                             {/* {selectedUser ? ( */}
-                <div className={styles.chatContainer}>
-                    <Chat user={loggedInUser} onBack={()=> setSelectedUser(null)} />
-                </div>
+
+                {selectedUser && <div className={styles.chatContainer}>
+                    <Chat selectedUser={selectedUser} profile={selectedUserProfile} onBack={()=> setSelectedUser(null)} />
+                </div> }
+                
             {/* ) : ( */}
             {/* )} */}
         </div>

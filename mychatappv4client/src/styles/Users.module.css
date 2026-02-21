@@ -27,7 +27,7 @@ h2
 }
 .usersContainer
 {
-    border: 1px solid white;
+    border: 1px solid #190e97;
     overflow-y: auto; /* Enable vertical scrolling */
     color: white;
     top: 0;
@@ -41,7 +41,7 @@ h2
     /* z-index: 1000; */
     top: 0;
     /* left: 0; */
-    width: 100%;
+    /* width: 100%; */
     box-sizing: border-box;
     height: 80px;
     /* background-color: #091e58; */
@@ -74,7 +74,7 @@ h2
 }
 .options
 {
-    border: 1px solid pink;
+    /* border: 1px solid pink; */
     width: 3rem;
     height: 3rem;
     margin-left: auto;
@@ -114,10 +114,11 @@ h2
 .profilePic
 {
     /* border: 1px solid blue; */
-    /* border-radius: 50px;
+    border-radius: 50px;
+    margin-left: 1rem;
     width:4rem;
     height: 4rem;
-    text-align: center; */
+    text-align: center;
     background: none;
 }
 .profilePic img
@@ -125,7 +126,7 @@ h2
     width: 4rem;
     height: 4rem;
     border-radius: 50px;
-    margin-left: 1rem;
+    /* margin-left: 1rem; */
 }
 .profilePic img:hover
 {

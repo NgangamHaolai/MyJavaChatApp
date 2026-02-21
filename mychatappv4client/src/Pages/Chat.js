@@ -13,12 +13,13 @@ import { Stomp } from '@stomp/stompjs';
 // STOMP is particularly useful in scenarios where messaging systems need to be integrated across various platforms and technologies.
 
 
-function Chat({user, onBack})
+function Chat({selectedUser, profile, onBack})
 {
     const [messages, setMessages] = useState([]);
     const [newMessages, setNewMessages] = useState("");
     const stompClientRef = useRef(null);
     const [loggedInUser, setLoggedInUser] = useState("");
+    // const [selectedUser, setSelectedUser] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => // Decode JWT to get currentUser username
@@ -38,22 +39,22 @@ function Chat({user, onBack})
             }
         }
     }, []);
-    
+
     useEffect(()=>  // Fetch previous messages between currentUser and user
     {
         const fetchMessages = async()=>
         {
-            if(loggedInUser && user)
+            if(loggedInUser && selectedUser)
             {
                 try
                 {
                     const token = localStorage.getItem("token");
                     if(token)
                     {
-                        const response = await axios.get(`http://localhost:8080/api/messages?sender=${loggedInUser}&receiver=${user.username}`,
+                        const response = await axios.get(`http://localhost:8080/api/messages?sender=${loggedInUser}&receiver=${selectedUser}`,
                             {headers: { Authorization: `Bearer ${token}` }}
                         );
-                        console.log(response.data);
+                        console.log("Retrieved Messages: ",response.data);
                         
                         const sortedData = response.data.sort(
                             (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
@@ -73,7 +74,7 @@ function Chat({user, onBack})
             }
         }   
         fetchMessages();
-    }, [loggedInUser, user]);
+    }, [loggedInUser, selectedUser]);
 
     useEffect(()=>  // WebSocket connection setup
     {
@@ -81,14 +82,14 @@ function Chat({user, onBack})
         {
             try
             {
-                const token = localStorage.getItem("token");
+                // const token = localStorage.getItem("tokean");
                 console.log('trying to connect...');
                 const socket = new SockJS(`http://localhost:8080/ws`,
                     // { headers: { Authorization: `Bearer ${token}`}}
                 );
                 const stompClient = Stomp.over(socket);
                 stompClientRef.current = stompClient;
-                stompClient.connect({}, ()=>
+                stompClient.connect({}, ()=> 
                 {
                     console.log("Conected to WebSocket.");
                     // Subscribe to messages for current user
@@ -98,8 +99,8 @@ function Chat({user, onBack})
                         console.log("Received message: ",receivedMessage);
 
                         // check if the mesasge is between the current user and the selected user
-                        if((receivedMessage.sender === user.username && receivedMessage.receiver === loggedInUser) ||
-                        (receivedMessage.sender === loggedInUser && receivedMessage.receiver === user.username))
+                        if((receivedMessage.sender === selectedUser.username && receivedMessage.receiver === loggedInUser) ||
+                        (receivedMessage.sender === loggedInUser && receivedMessage.receiver === selectedUser.username))
                         {
                             setMessages((prevMessages) => 
                             {
@@ -119,7 +120,7 @@ function Chat({user, onBack})
                 console.log("WebSocket connection error: ", error);
             }
         };
-        if(loggedInUser && user)
+        if(loggedInUser && selectedUser)
         {
             connect();
         }
@@ -134,23 +135,27 @@ function Chat({user, onBack})
                 });
             }
         };
-    }, [loggedInUser, user]);
+    }, [loggedInUser, selectedUser]);
     // Handle sending new messages
     const handleSendMessage = ()=>
     {
         if(newMessages.trim() === "") return;
         const messageObject = {
-            id: Date.now(), // Temporary ID, replace with server-generated ID if needed
+            // id: Date.now(), // Temporary ID, replace with server-generated ID if needed
             sender: loggedInUser,
-            receiver: user.username,
+            receiver: selectedUser,
             message: newMessages,
             timestamp: new Date().toISOString()
         }
+        console.log("messageObject:" ,messageObject);
+        
         // Send the new message via WebSocket
         if(stompClientRef.current && stompClientRef.current.connected)
-        {
-            stompClientRef.current.send("/app/chat", JSON.stringify(messageObject));
+        {                                                                               // Spring automatically converts JSON to Java object.
+            stompClientRef.current.send("/app/chat", {}, JSON.stringify(messageObject));// body needs to be in JSON format for de-serialization to take place.
             console.log("sent message", messageObject);
+            console.log("sent message", JSON.stringify(messageObject));
+
             // prevents duplicate messages in the UI by checking if the message already exists before adding it to the state.
             setMessages((prevMessages) => {
                 const exists = prevMessages.some((msg)=>(msg.timestamp === messageObject.timestamp));
@@ -164,44 +169,67 @@ function Chat({user, onBack})
         }
     };
 
+    const formatChatTime = (timestamp)=>
+    {
+        const date = new Date(timestamp);
+        return date.toLocaleTimeString('en-US',
+            {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            }
+        );
+    };
+
     return(
     <div className={styles.chatContainer}>
         <div className={styles.chatBar}>
             <div className={styles.profilePic}>
-                <img src="https://i.etsystatic.com/48111938/r/isla/448e06/68047008/isla_200x200.68047008_9oodzao2.jpg" alt="avatar.jpg"></img>
+                <img src={profile} alt="avatar.jpg"></img>
             </div>
-            <div className={styles.profileName}>{user}</div>
-        {/* <button onClick={onBack} className="back-button">Back</button>
-        <h2>Chat with {user.name}</h2>
-        <div className="chat-messages">
-                {messages.map((msg, index)=>(
-                    <div key={index} className={`message ${msg.sender === loggedInUser ? "me" : "them"}`}>
-                        <strong>{msg.sender}:</strong>{msg.message}
-                        <div>{new Date(msg.timestamp).toLocaleTimeString()}</div>
-                    </div>
-                ))}
-        </div>
-        <div className="chat-input">
-            <input type="text" 
-                placeholder="Type a message" 
-                value={newMessages} 
-                onChange={(e) => setNewMessages(e.target.value)}>
-            </input>
-            <button onClick={handleSendMessage}>Send</button>
-        </div> */}
+            <div className={styles.profileName}>{selectedUser}</div>
         </div>
         <div className={styles.chatMessages}>
-            <div className={styles.senderBox}>
+            {/* <div className={styles.senderBox}>
                 hey how are you doing?
+                <p className={styles.timestamp}>10:00 pm</p>
+            </div> */}
+            {/* <div className={styles.receiverBox}>
+                I'm doing good, how about you?It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                <p className={styles.timestamp}>10:00 pm</p>
+            </div>
+            <div className={styles.senderBox}>
+                hey how are you doing? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                <p className={styles.timestamp}>10:00 pm</p>
             </div>
             <div className={styles.receiverBox}>
-                I'm doing good, how about you?
+                I'm doing good, how about you? dgsdgsdggsgdgcbcvkukhjkkukhnmliuow4tqwewmbn vbnetx ghgfjj kgl wfesfgefg hgfh hgj nijlbug vygvygb nnknkj nin ouh okj njkmo moj in nn nu u
+                <p className={styles.timestamp}>10:00 pm</p>
+            </div><div className={styles.senderBox}>
+                hey how are you doing?
+                <p className={styles.timestamp}>10:00 pm</p>
+            </div> */}
+            {/* <div className={styles.receiverBox}>
+                I'm doing good, how about you? so will you be coming tonight? to the party? I'm expecting you..
+                <p className={styles.timestamp}>10:00 pm</p>
             </div>
+            <div className={styles.senderBox}>
+                hey how are you doing?
+                <p className={styles.timestamp}>10:00 pm</p>
+            </div> */}
+            {messages.map((e)=>
+            (
+                <div key={e.id} className={styles.senderBox}>
+                    {e.message}
+                    <p className={styles.timestamp}>{formatChatTime(e.timestamp)}</p>
+                </div>
+            ))}
+
         </div>
         <div className={styles.textContainer}>
-            <div className={styles.emojiContaier}>:)</div>
-            <input type="text" placeholder="Type a message" value={newMessages} onChange={(e)=> setNewMessages(e.target.value)}></input>
-            <button onClick={handleSendMessage}>Send</button>
+            <button className={styles.emojiButton}>:)</button>
+            <input type="text" placeholder="Type a message..." value={newMessages} onChange={(e)=> setNewMessages(e.target.value)}></input>
+            <button className={styles.sendButton} onClick={handleSendMessage}>Send</button>
         </div>
     </div>
     );
