@@ -23,6 +23,6 @@ public class MessageEntity
     @Column(name = "message")
     private String message;
 
-    @Column(name = "timeStamp")
-    private LocalDateTime timeStamp;
+    @Column(name = "timestamp")
+    private LocalDateTime timestamp;
 }

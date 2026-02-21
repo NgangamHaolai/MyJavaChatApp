@@ -38,25 +38,31 @@ public class ChatController
     @MessageMapping("/chat")
     public void sendMessage(MessageEntity message)
     {
-        message.setTimeStamp(LocalDateTime.now());
+        log.info("I am inside send Message [MessageObject] {}", message);
+
+        message.setTimestamp(LocalDateTime.now());
         messageRepository.save(message);
 
-        log.info("I am inside send Message");
+        log.info("I am inside send Message [MessageObject] {}", message);
         log.error("something went wrong!");
 
         // send message to both sender and receiver
         simpMessagingTemplate.convertAndSend("/topic/messages/" +message.getReceiver());
-        simpMessagingTemplate.convertAndSend("/topic/messages/" +message.getSender());
+//        simpMessagingTemplate.convertAndSend("/topic/messages/" +message.getSender());
     }
 
     @GetMapping("/api/messages")
     public List<MessageEntity> getMessages(@RequestParam String sender, @RequestParam String receiver)
     {
+        log.info("sender {}", sender);
+        log.info("receiver {}", receiver);
+//        log.error("an error occurred");
         return messageRepository.findMessages(sender, receiver);
     }
     @GetMapping("/api/users")
     public List<UserResponse> getUsers()
     {
+//        log.error("an error occurred");
         return userService.getUsers();
     }
     @PutMapping("/api/avatar")
