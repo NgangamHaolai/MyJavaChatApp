@@ -3,6 +3,7 @@ package com.example.mychatappv4.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,5 +25,5 @@ public class MessageEntity
     private String message;
 
     @Column(name = "timestamp")
-    private LocalDateTime timestamp;
+    private Instant timestamp;
 }

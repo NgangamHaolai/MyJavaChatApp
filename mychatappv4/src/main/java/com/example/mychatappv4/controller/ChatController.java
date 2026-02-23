@@ -15,6 +15,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,15 +41,16 @@ public class ChatController
     {
         log.info("I am inside send Message [MessageObject] {}", message);
 
-        message.setTimestamp(LocalDateTime.now());
+//        message.setTimestamp(LocalDateTime.now());
+        message.setTimestamp(Instant.now());
         messageRepository.save(message);
 
         log.info("I am inside send Message [MessageObject] {}", message);
-        log.error("something went wrong!");
+//        log.error("something went wrong!");
 
         // send message to both sender and receiver
-        simpMessagingTemplate.convertAndSend("/topic/messages/" +message.getReceiver());
-//        simpMessagingTemplate.convertAndSend("/topic/messages/" +message.getSender());
+        simpMessagingTemplate.convertAndSend("/topic/messages/" +message.getReceiver(), message);
+        simpMessagingTemplate.convertAndSend("/topic/messages/" +message.getSender(), message);
     }
 
     @GetMapping("/api/messages")

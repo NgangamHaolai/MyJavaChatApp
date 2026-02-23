@@ -38,9 +38,11 @@
     height: 100%;
     border-radius: 50px;
     margin-left: 0.5rem;
+    transition: 0.5s;
 }
 .profilePic img:hover
 {
+    cursor: pointer;
     transform: scale(1.1);
     transition: transform 0.3s ease;
 }
@@ -53,6 +55,35 @@
     font-size: 1.5rem;
     font-weight: 800;
     background: none;
+    transition: 0.5s;
+}
+.profileName:hover
+{
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: transform 0.5s ease;
+}
+.logout
+{
+    display: flex;
+    margin-left: auto;
+    width: 3rem;
+    align-items: center;
+    justify-content: center;
+    background-color: #1708c1;
+    border-radius: 0.5rem;
+    transition: 0.5s;
+}
+.logout svg
+{
+    background: none;
+}
+.logout:hover
+{
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+    cursor: pointer;
+    background: #190e97;
 }
 .chatMessages
 {
@@ -132,15 +163,53 @@
 .emojiButton
 {
     border: none;
-    border-radius: 10px;
-    padding: 1rem;
+    /* border-radius: 0.5rem; */
+    /* padding: 1rem; */
     margin-right: 1rem;
-    background-color: #190e97;
+    background: none;
+    /* background-color: #190e97; */
 }
-.emojiButton:hover
+.emojiButton svg
+{
+    background-color: yellow;
+    border-radius: 1rem;
+    transition: 0.5s;
+}
+.emojiButton svg:hover
 {
     cursor: pointer;
+    transform: scale(1.3);
+    transition: transform 0.5s ease;
 }
+/* .emojiContainer
+{
+    background-color: aqua;
+}
+.emojiContainer aside
+{
+    background-color: aquamarine;
+}
+.EmojiPickerReact
+{
+    background-color: red !important;
+    border: 10px solid white !important;
+}
+:global(.EmojiPickerReact) {
+  border-radius: 200px;
+}
+.emojiClass
+{
+    background: none; */
+
+/* } */
+/* .epr_-8623pq
+{
+    background-color: #091e58;
+}
+.epr_-99lr9q
+{
+    background: none; */
+/* } */
 .textContainer input
 {
     margin: auto;
@@ -154,6 +223,7 @@
     font-family: 'Courier New', Courier, monospace;
     font-size: medium;
     font-weight: 600;
+    transition: 0.5s;
 }
 .textContainer input:focus
 {
@@ -161,6 +231,15 @@
     border: none;
     box-shadow: 0 0 1px 1px rgb(85, 95, 237);
     outline: none;
+}
+.textContainer::selection   /* ::highlight color */
+{
+    background-color: #091e58;
+}
+.textContainer input:hover
+{
+    transform: scale(1.005);
+    transition: transform 0.5s ease;
 }
 .sendButton
 {
@@ -171,9 +250,12 @@
     background-color: #190e97;
     color: white;
     font-size: medium;
+    transition: 0.5s;
 }
 .sendButton:hover
 {
     cursor: pointer;
     background-color: #1708c1;
+    transform: scale(1.05);
+    transition: transform 0.5s ease-in-out;
 }

@@ -28,7 +28,7 @@ for(let i=0; i<arr.length; i++)
     }
 }
 console.log('removed duplicates: ', arr);
-
+// 
 let unique = [];
 for(let i=0; i<arr.length; i++)
 {
@@ -64,14 +64,16 @@ console.log('sorted array: ',sortedArray);
 // WITH REDUCE METHODS.....
 // 1. Reverse a String
 let str11 = "Hello World";
-let reversedString = str11.split(" ").reduce((rev, ch)=>
-    ch + rev, " ");
+let reversedString = str11.split('').reduce((rev, ch)=>
+    ch + rev, '');
 console.log('reversed string: ',reversedString);
 
 // 2. Check if a String is a Palindrome
 let str12 = "madam";
-let res = str12.split(" ").reduce((prev, curr)=>
-    curr + prev, " ");
+let res = str12.split('').reduce((prev, curr)=>
+    curr + prev, '');
+if(res===str12)
+    console.log("Palindrome");
 console.log('result: ',res);
 
 // 3.Find Largest no. in an Array.
@@ -92,13 +94,84 @@ let occurence = str10.split("").reduce((prev,curr)=>
 console.log('occurence: ',occurence);
 
 // 5. Remove duplicates from an array
+let arr11 = [1,1,2,4,5,5,6];    // my way
+for(let i=0; i<arr11.length; i++)
+{
+    for(let j=i+1; j<arr11.length; j++)
+    {
+        if(arr11[i]===arr11[j] && arr11[j]!== Number.MAX_VALUE)
+            arr11[j] = Number.MAX_VALUE;
+    }
+}
+let result = [];   
+let j = 0;
+for(let i=0; i<arr11.length; i++)
+{
+    if(arr11[i]!==Number.MAX_VALUE)
+    {
+        result[j++] = arr11[i];
+    }
+}
+console.log(arr11);
+console.log(result);
+// using reduce
+arr11 = [1,1,2,3,4,8,3,7,6];
+const res11 = arr11.reduce((acc,curr)=>
+{
+    if(!acc.includes(curr))
+        acc.push(curr);
+    return acc;
+}, [])
+console.log('reduced: ',res11);
+// using filter
+const res12 = arr11.filter((item,index)=>
+{
+    return arr11.indexOf(item)===index;
+});
+console.log("filtered:",res12);
+
 // 6. Sum of array elements
+let arr14 = [1,1,2,4,5,5,6];
+let res14 = arr14.reduce((acc,curr)=>   // using reduce()
+{
+    return acc+curr;
+});
+console.log("sum:",res14)
+
 // 7. Merge two arrays
 // 8. Find second largest from an Array
-
+let arr15 = [1,2,3,45,5100,5,5];
+let res15 = arr.sort((a,b)=>b-a)
+console.log(res[1])
 // Check is a no. is a strong no.
-let num = 123;
+let n = 145;
+let m = n;
+let sum2 = 0;
 while(n>0)
 {
-    
+    let k=n%10;
+    let val = 1;
+    while(k>0)
+    {
+        val = val*k;
+        k--;
+    }
+    sum2 = sum2 + val;
+    n=Math.floor(n/10);
 }
+if(sum2===m) console.log("Strong number")
+
+// Print the even no.s from 1-20
+for(let i=1; i<=20; i++)
+{
+    if(i%2===0)
+        console.log(i)
+}
+
+// Print the no.s from 10 to 1
+for(let i=10; i>=1; i--)
+    console.log(i)
+
+// Print multiplication table of 5
+for(let i=1; i<=10; i++)
+    console.log("5 X ",i,"=",5*i)
