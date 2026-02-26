@@ -20,10 +20,8 @@ function Chat({selectedUser, profile, onBack})
 {
     const [messages, setMessages] = useState([]);
     const [newMessages, setNewMessages] = useState("");
-    // const [messageObject, setMessageObject] = useState(null);
     const stompClientRef = useRef(null);
     const [loggedInUser, setLoggedInUser] = useState("");
-    // const [selectedUser, setSelectedUser] = useState(null);
     const [showEmoji, setShowEmoji] = useState(false);
     const navigate = useNavigate();
     const chatRef = useRef(null);
@@ -77,7 +75,7 @@ function Chat({selectedUser, profile, onBack})
             }
         }
     }   
-    
+
     useEffect(()=>  // Fetch previous messages between currentUser and user
     {
         fetchMessages();
@@ -89,32 +87,35 @@ function Chat({selectedUser, profile, onBack})
         {
             try
             {
-                // const token = localStorage.getItem("tokean");
+                const token = localStorage.getItem("token");
                 console.log('trying to connect...');
-                const socket = new SockJS(`http://localhost:8080/ws`,
-                    // { headers: { Authorization: `Bearer ${token}`}}
-                );
+                const socket = new SockJS(`http://localhost:8080/ws`);
                 const stompClient = Stomp.over(socket);
                 stompClientRef.current = stompClient;
-                stompClient.connect({}, ()=> 
+                stompClient.connect({
+                    headers: { Authorization: `Bearer ${token}`}
+                }, ()=> 
                 {
                     console.log("Conected to WebSocket.");
                     // Subscribe to messages for current user
-                    stompClient.subscribe(`/topic/messages/${loggedInUser}`, (message)=>
-                    {
+                    stompClient.subscribe(`/topic/messages/${loggedInUser}`, (message) => {
                         const receivedMessage = JSON.parse(message.body);
-                        console.log("Received message: ",receivedMessage);
-
-                        // check if the mesasge is between the current user and the selected user
-                        if((receivedMessage.sender === selectedUser.username && receivedMessage.receiver === loggedInUser) ||
-                        (receivedMessage.sender === loggedInUser && receivedMessage.receiver === selectedUser.username))
-                        {
+                        
+                        // if((receivedMessage.sender === selectedUser.username && receivedMessage.receiver === loggedInUser) ||
+                        // (receivedMessage.sender === loggedInUser && receivedMessage.receiver === selectedUser.username))
+                        // {
+            // prevents duplicate messages in the UI by checking if the message already exists before adding it to the state.
                             setMessages((prevMessages) => 
                             {
-                                const exists = prevMessages.some(msg => msg.id === receivedMessage.id);
+                                const exists = prevMessages.some(msg => {
+                                    // console.log('msg.id',msg.id)
+                                    // console.log('receivedMessage.id',receivedMessage.id);
+                                    return msg.id === receivedMessage.id
+                                });
                                 return exists ? prevMessages : [...prevMessages, receivedMessage];
                             });
-                        }
+                        // }
+                        console.log("Incoming message:", receivedMessage);
                     });
                 }, 
                 (error)=>
@@ -142,7 +143,7 @@ function Chat({selectedUser, profile, onBack})
                 });
             }
         };
-    }, [loggedInUser, selectedUser]);
+    }, [loggedInUser]);
     // Handle sending new messages
     const handleSendMessage = ()=>
     {
@@ -155,19 +156,12 @@ function Chat({selectedUser, profile, onBack})
             timestamp: new Date().toISOString()
         }
         console.log("messageObject:" ,messageObject);
-        // setMessageObject(messageObject);
         // Send the new message via WebSocket
-        if(stompClientRef.current && stompClientRef.current.connected)
-        {                                                                               // Spring automatically converts JSON to Java object.
+        if(stompClientRef.current && stompClientRef.current.connected)  // just a safety check.
+        {                             // ddestination(string), headers(object), body(string)                                        // Spring automatically converts JSON to Java object.
             stompClientRef.current.send("/app/chat", {}, JSON.stringify(messageObject));// body needs to be in JSON format for de-serialization to take place.
-            console.log("sent message", messageObject);
-            console.log("sent message", JSON.stringify(messageObject));
-
-            // prevents duplicate messages in the UI by checking if the message already exists before adding it to the state.
-            setMessages((prevMessages) => {
-                const exists = prevMessages.some((msg)=>(msg.timestamp === messageObject.timestamp));
-                return exists ? prevMessages : [...prevMessages, messageObject];
-            });
+            console.log("sent messageObject", messageObject);
+            // JSON.stringify() in JavaScript is used to convert a JavaScript value (object, array, number, string, etc.) into a JSON-formatted string.
             setNewMessages("");
         }
         else
@@ -176,10 +170,10 @@ function Chat({selectedUser, profile, onBack})
         }
     };
 
-    useEffect(()=>
-    {
+    // useEffect(()=>
+    // {
         
-    }, [handleSendMessage]);
+    // }, [handleSendMessage]);
 
     const formatChatTime = (timestamp)=>
     {
@@ -232,7 +226,7 @@ function Chat({selectedUser, profile, onBack})
             {
                 e.preventDefault();
                 handleSendMessage();
-                fetchMessages();
+                // fetchMessages();     // this is a very incorrect & inefficient way of refreshing chat list.
             }}>
                 {/* <div className={styles.emojiContainer}> */}
                     {showEmoji && <EmojiPickerReact theme="dark" onEmojiClick={handleEmojiClick}/>}

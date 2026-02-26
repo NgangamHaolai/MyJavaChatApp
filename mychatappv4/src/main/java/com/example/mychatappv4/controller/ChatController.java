@@ -15,6 +15,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,9 +41,8 @@ public class ChatController
     public void sendMessage(MessageEntity message)
     {
         log.info("I am inside send Message [MessageObject] {}", message);
-
-//        message.setTimestamp(LocalDateTime.now());
-        message.setTimestamp(Instant.now());
+//        message.setTimestamp(LocalDateTime.now());    // discarded because it does not provide a TimeZone.
+        message.setTimestamp(Instant.now());    // whereas this... gives TimeZone.
         messageRepository.save(message);
 
         log.info("I am inside send Message [MessageObject] {}", message);
