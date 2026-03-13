@@ -1,5 +1,10 @@
 /target/
 *.log
 
+.env
+target/
+node_modules/
+build/
+
 /mychatappv4client/node_modules
 /mychatappv4client/build
