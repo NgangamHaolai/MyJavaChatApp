@@ -30,8 +30,13 @@ public class SecurityConfig
 {
     @Value("${app.cors.allowedOrigins}")
     private String FRONTEND_URL;
-    @Autowired
-    public JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
