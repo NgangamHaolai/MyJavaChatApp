@@ -31,7 +31,7 @@ function RegisterPage()
             // }
             // else
             // {            
-                const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/register`,{username, email, password, confirmPassword});
+                const response = await axios.post(`${process.env.REACT_APP_API_SERVER_URL}/api/register`,{username, email, password, confirmPassword});
                 // console.log('response data:', response);
                 if(response.data.token)
                 {

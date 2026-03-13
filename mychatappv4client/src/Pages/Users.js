@@ -29,7 +29,7 @@ function Users()
                 const decodedToken = jwtDecode(token);   // decoding the token to get user info aka userID
                 setLoggedInUser(decodedToken.sub);     // assuming sub holds the userID
                 console.log('decodedToken.sub: ',decodedToken);
-                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/users`, { 
+                const response = await axios.get(`${process.env.REACT_APP_API_SERVER_URL}/api/users`, { 
                     headers: { Authorization: `Bearer ${token}` } 
                 });
                 setUsers(response.data);
