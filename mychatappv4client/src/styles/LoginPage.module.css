@@ -12,6 +12,8 @@
 }
 .inputContainer
 {
+    display: flex;
+    flex-direction: column;
     width: 300px;
     margin-bottom: 15px;
     background: none;
@@ -70,4 +72,21 @@
     margin-top: 0;
     margin: 0;
     background: none;
+}
+@media screen and (max-width: 700px)
+{
+    .loginContainer
+    {
+        width: auto;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .inputContainer input
+    {
+        width: 95%;
+    }
+    .loginButton
+    {
+        width: 80%;
+    }
 }

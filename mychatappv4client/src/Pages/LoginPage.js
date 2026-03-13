@@ -31,6 +31,8 @@ function LoginPage()
             console.log(error.response);
             console.log(error.response.data);
             console.log(error.response.data.error);
+            if(error.response.data.unauthorized)
+                alert("invalid username or password")
             setErrors(error.response.data);
         }
     }

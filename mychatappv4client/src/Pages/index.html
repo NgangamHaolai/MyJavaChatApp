@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // let str6 = prompt('Enter the String');
+
+        // function reverse(str6)
+        // {
+        //     for(let i=str6.length-1; i>=0; i--)
+        //         console.log('str[',i,']',str6[i]);
+        // }
+        // reverse(str6);
+
+        // let res = '';
+        // function reverse2(str6)
+        // {
+        //     for(let i=0; i<str6.length; i++)
+        //         res = str6[i] + res;
+        //     return res;
+        // }
+        // console.log("before reversed:",str6);
+        // let result = reverse2(str6)
+        // console.log("after reversing:",result);
+        
+        let str7 = "running up hill up hill";
+        console.log(str7.split(""));
+        console.log(str7.split("").join(""));
+        console.log(str7.split("").reverse().join(""));
+        
+        // check palindrome in a string
+        // convert 1st letter to upper case
+        // count the occurence of a character
+        // check if the string contains a particular word
+        // find duplicate characters in a string
+        
+        console.log(str7.at(-1));   // accepts negative
+        console.log(str7.charAt(5));    // does not accept negative
+        console.log(str7.includes("up"));
+        console.log(str7.toLowerCase());
+        console.log(str7.toUpperCase());
+        console.log(str7.concat(' hey'+' you! ','stop there'));
+        
+        console.log(str7.trim());
+        console.log(str7.trimStart());
+        console.log(str7.trimEnd());
+
+        // let ans = prompt("Enter your word");
+        // switch(ans)
+        // {
+        //     case "apple":
+        //         console.log("apple of my eye");
+        //         break;
+        //     case "mango":
+        //         console.log("mango bongo");
+        //         break;
+        //     default:
+        //         console.log("exiting...");
+        // }
+        console.log(str7);
+        console.log(str7.indexOf(" up"));
+        console.log(str7.indexOf("up", 10));    // from specified index
+        console.log(str7.lastIndexOf("up"));    // from last index
+        
+        console.log(str7.slice(5,20));  // accepts negative index
+        console.log(str7.substring(5,20));  // doesn't accepts negative index
+        
+        let arr = [1,8,41,6,1,93,3,5,31]
+        let arr2 = arr.sort((a,b)=>{
+            return a-b;
+        });
+        let arr3 = arr.sort((a,b)=>{
+            return b-a;
+        });
+        
+        );
+        let age = 100;
+let obj2 = {
+    age: 30,
+    data:function(){
+        console.log(this.age);
+    },
+    getAge: ()=>{
+        console.log(this.age);
+    }
+}
+        
+        
+    </script>
+</body>
+</html>

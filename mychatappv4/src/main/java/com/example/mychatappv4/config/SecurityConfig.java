@@ -3,6 +3,7 @@ package com.example.mychatappv4.config;
 import com.example.mychatappv4.filter.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,6 +28,8 @@ import java.util.List;
 //@EnableWebSecurity    // deprecated so not needed anymore
 public class SecurityConfig
 {
+    @Value("${app.cors.allowedOrigins}")
+    private String FRONTEND_URL;
     @Autowired
     public JwtAuthenticationFilter jwtAuthenticationFilter;
     @Bean
@@ -75,7 +78,7 @@ public class SecurityConfig
     public CorsConfigurationSource corsConfigurationSource()
     {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedOrigins(List.of(FRONTEND_URL));
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","PATCH","OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

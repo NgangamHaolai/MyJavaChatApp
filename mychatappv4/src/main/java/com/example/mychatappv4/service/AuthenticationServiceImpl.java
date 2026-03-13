@@ -68,6 +68,7 @@ public class AuthenticationServiceImpl implements AuthenticationService
         log.info("inside authenticate() {}", request);
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         User user = (User) authentication.getPrincipal();   // alternate way. saves one DB call
+
 //        String username = request.getUsername();
 //        User user = (User) userService.loadUserByUsername(username);
         log.info("User: {}", user);

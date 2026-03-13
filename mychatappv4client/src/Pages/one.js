@@ -1,3 +1,4 @@
+
 // Sort array
 let array = [5,3,8,7,2,4,1];
 let sortedArray = array.sort((a,b)=>a-b);
@@ -154,7 +155,7 @@ let arr15 = [1,2,3,45,5100,5,5];
 let res15 = arr15.sort((a,b)=>b-a)
 console.log(res[1])
 
-// Check is a no. is a strong no.
+// Check if a no. is a strong no.
 let n = 145;
 let m = n;
 let sum2 = 0;
@@ -230,3 +231,368 @@ console.log('mul',operation(3,4,mul));
 console.log('add2:',operation(2,2,(a,b)=>a+b));
 console.log('sub2:',operation(5,3,(a,b)=>a-b));
 console.log('mul2:',operation(3,4,(a,b)=>a*b));
+
+let x1 = ()=>
+{
+    console.log("parent()");
+    let y1 = ()=>
+    {
+        console.log("child()");
+        let z1 = ()=>
+        {
+            console.log("inner child()");
+        }
+        z1();
+    }
+    y1();
+}
+x1();
+
+let x2 = 10;
+let a2 = ()=>
+{
+    console.log(x2);    // 10
+    let b2 = ()=>
+    {
+        let y2 = 20;
+        console.log(y2);    // 20
+        console.log(x2);    // 10
+    }
+    b2();
+}
+a2();
+
+// JavaScript Corrying/curring
+let data = ()=>
+{
+    console.log("parent");
+    return function data2()
+    {
+        console.log("this is data2");
+        return function data3()
+        {
+            console.log("this is data3");
+        }
+    }
+}
+data()()()
+
+function counter()
+{
+    let count=0;
+    return function increment()
+    {
+        count++;
+        console.log("C:",count);  
+        return function decrement()
+        {
+            count--;
+            console.log("c:",count);
+        }
+    }
+}
+let data1 = counter()
+data1 = counter()
+console.log("data1:",data1);
+// data1()  // calls increment once
+// data1()  // calls increment twice
+// data1()  // calls increment thrice
+data1()()   // calls increment -> decrement
+
+function counter2()
+{
+    let count=0;
+    let increment = ()=>
+    {
+        count++;
+        console.log(count);
+    }
+    let decrement = ()=>
+    {
+        count--;
+        console.log(count);
+    }
+    return {increment,decrement}
+}
+let data2 = counter2()
+console.log(data2.increment(), data2.decrement());
+data2.increment
+data2.decrement
+
+function multiplier(number)
+{
+    return function factorial(factor)
+    {
+        return number*factor;
+    }
+}
+let double = multiplier(5)
+console.log(double(2));
+let triple = multiplier(10)
+console.log(triple(3));
+
+// How to make private varibales
+
+let str1 = "hello world";
+let str2 = 'hello world again in single-quotes';
+let str3 = `hello hello world again in back-ticks : ${str1}`;   // String interpolation
+console.log(str1); console.log(typeof str1);
+console.log(str2); console.log(typeof str2);
+console.log(str3); console.log(typeof str3);
+
+let str4 = new String("hello world using new-keyword");
+console.log(str4); console.log(typeof str4);
+
+let str5 = String("hello world using String constructor")
+console.log(str5); console.log(typeof str5);
+
+// let str6 = "hello world";
+// console.log(str6[10]);
+// console.log(str6.length);
+// for(let i=0; i<str.length; i++)
+//     console.log(str6[i]);
+// Taking user prompt
+// let str6 = prompt('Enter the String');
+// function reverse(str6)
+// {
+//     for(let i=str6.length-1; i>=0; i--)
+//         console.log('str[',i,']',str6[i]);
+// }
+// reverse("hello world");
+
+// Find the factorial of 5
+let n4 = 5;
+let fact = 1;
+for(let i=1; i<=n4; i++)
+{
+    fact = fact*i;
+}
+console.log(`factorial of ${n4} is: `,fact);
+
+// Count the no. of digits in a no.
+let n5 = 12345;
+let count = 0;
+while(n5>0)
+{
+    count++;
+    n5 = Math.floor(n5/10);
+}
+console.log("count is:",count);
+
+// Check prime no. between 1-20
+for(let i=1; i<=20; i++)
+{
+    let prime = true;
+    for(let j=2; j<=i/2; j++)
+    {
+        if(i%j===0)
+        {
+            prime=false;
+            break;
+        }
+    }
+    if(prime)
+        console.log(i);
+}
+
+// WAP to calculate the final saalry category based on:
+// 1. Basic salary
+// 2. Experience in years
+// 3. Performance rating (1-5)
+
+// WAP that takes a students marks 0-100 and prints the grade on following conditions:
+// 90 and above - A grade
+// 75 - 89 - B grade
+// 60 - 74 - C grade
+// 40 - 59 - D grade
+// below 40 - Fail
+
+// WAP that determines fixed result based on Marks 0 to 100, attendance based on percentage, has projects (true) or (false)
+// if marks < 35 Fail
+// if marks >= 35:
+    // i) if attendence < 75% Fail
+    // ii) if attendence >=75%:
+        // if marks >=90 and and has project "outstanding with project"
+
+    
+    let str16 = "Hello world";  // all to uppercase
+    let arr10 = str16.split("");
+    let res10 = arr10.map(x=>x.toUpperCase());
+    let res1010 = res10.join("");
+    console.log(res1010);
+
+    let arr18 = [4,3,2,1];  // convert to string
+    arr18.map(x=>{
+        console.log(x.toString());
+    });
+    
+    let arr17 = ["hi", "hello"] // find length of each
+    arr17.map(x=>{
+        console.log(x.length);
+    });
+
+    let arr19 = [1,2,3,4,5];
+    arr19.map(x=>
+    {
+        x%2==0 ? console.log("double:",x*x) : console.log(x);
+    });
+
+    // Reverse each word in a sTring.
+    let s
+    // replace the odd no. with 0 in an array.
+    // multilpy the no. by its index.
+    // add the previous element.
+    // repeat each word by its length
+    // extract the first letter of each word.
+    // reverse only words with length greater than 3
+
+    let str17 = " Hell ";
+    let str18 = 'hello world again in single-quotes';
+    let str19 = `hello hello world again in back-ticks hello :: ${str17}`;
+    console.log("******");
+    console.log(str19.slice(-3));
+    console.log(str19.substring(-3));
+    console.log(str18.split(''));
+    console.log(str17.trimEnd().length);
+    console.log(str17.trimStart().length);
+    console.log(str17.trim().length);
+    let str20 = new String("Bye bye");
+    console.log(typeof(str20));
+    let str21 = str20.toString();
+    console.log(typeof(str21));
+    let arr20 = [1,2,3,4,5];
+    let res20 = arr20.map(x=>x>2);
+    let res21 = arr20.filter(x=>x>3)
+    let res22 = arr20.reduce((accu,curr)=>accu+curr);
+    arr20.forEach(x=>console.log("->",x));
+    console.log(res20);
+    console.log(res21);
+    console.log(res22);
+    let s20 = 20;
+    let test = function()
+    {
+        let s20 =  10;
+        console.log(s);
+    }
+    test();
+
+    // (function()
+    // {
+    //     let f2=()=>
+    //     {
+    //         console.log("f2")
+    //     }
+    //     f2();
+    //     console.log("f1")
+    // })()   
+    
+    (function()
+    {
+        let s = "secret"
+        function f2(secret) 
+        {
+            console.log(secret)
+        }
+        f2(s);
+    })();
+
+    // let operation1 = (a,b,operator)=>{
+    //     return operator(a,b);
+    // }
+    // let operator = (a,b)=>a+b;
+
+    // console.log(operation1(10,20,(a,b)=>a+b));
+    console.log(operation(10,20,(a,b)=>a+b));
+    
+    let obj = {
+        "name": "John",
+        "age": 30,
+        "city": "New York",
+        "skills": ["JavaScript", "React", "Node.js"],
+        "address": {
+            "street": "123 Main St",
+            "zip": "10001"
+        },
+        data:function(){
+            console.log("This is a method inside the object");
+        },
+        job: ()=>{
+            console.log("MMA Fighter");
+        },
+        passion(){
+            console.log("Movies and Chocolate");
+        },
+        obj:{
+            firstname: "John",
+            'lastname': "Doe",
+        }
+    }
+    console.log(obj);
+    obj.skills.map(x=>console.log(x));
+    obj.data();
+    obj.job();
+    obj.passion();
+    console.log(obj.obj.lastname);
+    
+let age = 100;
+let obj2 = {
+    age: 30,
+    data:function(){
+        console.log(this.age);
+    },
+    getAge: ()=>{
+        console.log(this.age);
+    }
+}
+
+let obj3={
+    a:10,
+    b:20,
+    c:30
+}
+// it does not change original array it returns nested array
+let data3 = Object.entries(obj3);
+console.log("data3",data3);
+// checking original array object
+console.log(obj3);
+// changing the indexing
+data3[0][0]="d"
+console.log("data3:",data3);
+
+// it does not change original object
+// it converts array back to object ki
+// it returns new Object
+obj3 = Object.fromEntries(data3)
+console.log(obj3);
+
+// let obj4={
+//     a:200,b:300
+// }
+// Object.freeze(obj4)  // freeze()
+// obj4.a=100;
+// console.log("obj4:",obj4);
+
+// let obj5={ a:"100", b:"200"}
+// Object.seal(obj5)   // seal()
+// // can't add can't delete can only modify
+// delete obj5.a;
+// obj5.a="String"
+// console.log("obj5",obj5);
+
+let car={
+    "name": "BMW",
+    prive:1000,
+    speed:"100km/hr"
+}
+let car2={...car,
+    color:"blue"
+}
+console.log("car2",car2)
+let arr6=['this','is'];
+let [a,b]=arr //desctructuring
+let arr7=[...arr6,"js"]
+console.log("arr7",arr7);
+
+let arr8=[1,2,3,4,5]
+let arr9=[...arr8]
+console.log("arr9",arr9);

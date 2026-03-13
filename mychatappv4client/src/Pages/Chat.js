@@ -16,15 +16,17 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 import { BsEmojiSmile } from "react-icons/bs";
 import EmojiPickerReact from 'emoji-picker-react';
 
-function Chat({selectedUser, profile, onBack})
+function Chat({selectedUser, profile, onBack, onLogout})
 {
     const [messages, setMessages] = useState([]);
     const [newMessages, setNewMessages] = useState("");
     const stompClientRef = useRef(null);
     const [loggedInUser, setLoggedInUser] = useState("");
     const [showEmoji, setShowEmoji] = useState(false);
+    const [logoutPopup, setLogoutPopup] = useState(false);
     const navigate = useNavigate();
     const chatRef = useRef(null);
+    const inputRef = useRef(null);
 
     useEffect(() => // Decode JWT to get currentUser username
     {
@@ -170,11 +172,6 @@ function Chat({selectedUser, profile, onBack})
         }
     };
 
-    // useEffect(()=>
-    // {
-        
-    // }, [handleSendMessage]);
-
     const formatChatTime = (timestamp)=>
     {
         const date = new Date(timestamp);
@@ -196,7 +193,20 @@ function Chat({selectedUser, profile, onBack})
         setNewMessages(prev=>prev+e.emoji);
         setShowEmoji(false);
     }
+    const handleLogout = ()=>
+    {
+        onLogout();
+    }
+    const handleBackClick = ()=>
+    {
+        onBack();
+    }
     useEffect(()=>
+    {
+        if(selectedUser && inputRef.current)
+            inputRef.current.focus();
+    }, [selectedUser])
+    useEffect(()=>  // automatically scroll to the latest chat
     {
         if(chatRef.current)
             chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -205,11 +215,14 @@ function Chat({selectedUser, profile, onBack})
     return(
     <div className={styles.chatContainer}>
         <div className={styles.chatBar}>
+            <div className={styles.backButton} onClick={handleBackClick}>
+                <AiOutlineArrowLeft/>
+            </div>
             <div className={styles.profilePic}>
                 <img src={profile} alt="avatar.jpg"></img>
             </div>
             <div className={styles.profileName}>{selectedUser}</div>
-            <div className={styles.logout}>
+            <div className={styles.logout} onClick={handleLogout}>
                 <AiOutlinePoweroff/>
             </div>
         </div>
@@ -239,7 +252,8 @@ function Chat({selectedUser, profile, onBack})
                     type="text" 
                     placeholder="Type a message..." 
                     value={newMessages} 
-                    onChange={(e)=> setNewMessages(e.target.value)}>
+                    onChange={(e)=> setNewMessages(e.target.value)}
+                    ref={inputRef}>
                 </input>
                 <button type="submit" className={styles.sendButton}> 
                     Send

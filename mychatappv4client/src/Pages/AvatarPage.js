@@ -27,7 +27,11 @@ function AvatarPage()
                 setLoggedInUser(decodedToken.sub);
                 console.log('decodedToken.sub: ',decodedToken.sub);
             }
-
+            else
+            {
+                alert('No token found. User might not be logged in.');
+                navigate('/login'); // Redirect to login if no token is found
+            }            
             // const response = await axios.get("http://localhost:8080/api/avatars",
             //    { headers: { Authorization: `Bearer ${token}` } }
             // );
@@ -52,6 +56,11 @@ function AvatarPage()
         {
             console.log('Error fetching avatars: ', error.reseponse);
             console.log("Error fetching avatars: ", error.response.data);
+            if(error.response.data.unauthorized)
+            {
+                alert("Unauthorized! Please login again.");
+                navigate("/login");
+            }
         }
     }
 

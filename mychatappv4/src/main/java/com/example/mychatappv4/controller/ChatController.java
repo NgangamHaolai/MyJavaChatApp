@@ -9,6 +9,8 @@ import com.example.mychatappv4.repository.UserRepository;
 import com.example.mychatappv4.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -28,6 +30,13 @@ public class ChatController
 //    private final UserRepository userRepository;
     private final UserServiceImpl userService;
     private final SimpMessagingTemplate simpMessagingTemplate; // Power Tool // It allows you to send messages programmatically.
+
+//    @Value("${app.size}")   // checking the usage of @Value annotation
+//    private String sized;
+//    @Value("${app.description}")
+//    private String description;
+//    @Autowired
+//    private Environment env;    // checking the usage of Environment object
 
     @Autowired
     public ChatController(MessageRepository messageRepository, UserRepository userRepository, UserServiceImpl userService, SimpMessagingTemplate simpMessagingTemplate) {
@@ -56,9 +65,11 @@ public class ChatController
     @GetMapping("/api/messages")
     public List<MessageEntity> getMessages(@RequestParam String sender, @RequestParam String receiver)
     {
+//        System.out.println("size"+sized);
+//        System.out.println("desc: "+description);
+//        System.out.println(env.getProperty("spring.datasource.url"));
         log.info("sender {}", sender);
         log.info("receiver {}", receiver);
-//        log.error("an error occurred");
         return messageRepository.findMessages(sender, receiver);
     }
     @GetMapping("/api/users")

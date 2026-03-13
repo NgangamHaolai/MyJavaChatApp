@@ -69,3 +69,23 @@
     transform: scale(1.05);
     transition: transform 0.3s ease;
 }
+@media screen and (max-width: 700px)
+{
+    .avatarsGrid
+    {
+        grid-template-columns: auto auto;
+        gap: 1rem;
+    }
+    .avatarPreview img
+    {   
+        width: 150px;
+    }
+    .selectedAvatarPreview img
+    {   
+        width: 150px;
+        border-radius: 100px;
+        transform: scale(1.05);
+        background: none;
+        box-shadow: 0 0 20px 10px rgb(35, 120, 211);
+    }
+}

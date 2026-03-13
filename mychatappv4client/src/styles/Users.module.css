@@ -149,3 +149,60 @@ h2
     transform: scale(1.1);
     transition: transform 0.5s ease;
 }
+.logoutBackground
+{
+    position: fixed ;
+    display: flex;
+    /* flex-direction: column; */
+    height: 100vh !important;
+    width: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgb(6, 28, 139, 0.5),   /* Solid blue at top */
+        rgba(170, 182, 194, 0.5)    /* Transparent at bottom */
+    );
+}
+.logoutPopup
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: auto;
+    padding: 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px 1px white;
+
+}
+.areYouSure
+{
+    align-items: center;
+    color: white;
+}
+.button
+{
+    border-radius: 10px;
+    box-sizing: border-box;
+    border: none;
+    box-shadow: 0 0 10px 1px;
+    background-color: #0a2c8c;
+    margin: 1.5rem;
+    padding: 1.5rem;
+    color: white;
+    transition: 0.5s;
+}
+.button:hover
+{
+    cursor: pointer;
+    background-color: #1708c1;
+    transform: scale(1.1);
+    transition: transform 0.5s ease;
+}
+@media screen and (max-width: 700px)
+{
+    .mainContainer
+    {
+        grid-template-columns: 100%;
+        width: 100%;
+    }
+}

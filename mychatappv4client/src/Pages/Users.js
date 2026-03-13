@@ -11,6 +11,7 @@ function Users()
     const [loggedInUser, setLoggedInUser] = useState("");
     const [selectedUser, setSelectedUser] = useState(null);
     const [selectedUserProfile, setSelectedUserProfile] = useState("");
+    const [logoutPopup, setLogoutPopup] = useState(false);
     const navigate = useNavigate();
     
     useEffect(()=>
@@ -49,7 +50,6 @@ function Users()
                 alert("Unauthorized! Please login again.");
                 navigate("/login");
             }
-
         }
     }
     const handleSelectedUser = (user)=>
@@ -58,6 +58,13 @@ function Users()
         setSelectedUserProfile(user.avatar);
         console.log("user:",user);
     }
+    const handleLogout = ()=>
+    {
+        localStorage.removeItem("token");
+        setLogoutPopup(false);
+        navigate("/login");
+    }
+
 
     return(
         <div className={styles.mainContainer}>
@@ -80,14 +87,25 @@ function Users()
                         </div>
                 ))}
                 </div>
-                            {/* {selectedUser ? ( */}
 
                 {selectedUser && <div className={styles.chatContainer}>
-                    <Chat selectedUser={selectedUser} profile={selectedUserProfile} onBack={()=> setSelectedUser(null)} />
+                    <Chat 
+                        selectedUser={selectedUser} 
+                        profile={selectedUserProfile} 
+                        onBack={()=> setSelectedUser(null)} 
+                        onLogout={()=> setLogoutPopup(true)} />
                 </div> }
-                
-            {/* ) : ( */}
-            {/* )} */}
+
+                {logoutPopup && 
+                <div className={styles.logoutBackground}>
+                    <div className={styles.logoutPopup}>
+                        <div className={styles.areYouSure}>Are you Sure?</div><br></br>
+                        <div>
+                            <button className={styles.button} onClick={handleLogout}>Yes</button>
+                            <button className={styles.button} onClick={()=>setLogoutPopup(false)}>No</button>
+                        </div>
+                    </div>
+                </div>}
         </div>
     );
 };
