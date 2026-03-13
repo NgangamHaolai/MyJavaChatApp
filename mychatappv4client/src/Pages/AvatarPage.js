@@ -70,7 +70,7 @@ function AvatarPage()
         {
             const token = localStorage.getItem("token");
             const decodeToken = jwtDecode(token);
-            const response = await axios.put("http://localhost:8080/api/avatar", {
+            const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/avatar`, {
                 // headers: { Authorization: `Bearer ${decodeToken}`}, 
                 avatar: selectedAvatar, loggedInUser: loggedInUser }
             );

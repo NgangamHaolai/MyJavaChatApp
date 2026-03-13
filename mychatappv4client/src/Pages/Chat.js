@@ -55,7 +55,7 @@ function Chat({selectedUser, profile, onBack, onLogout})
                 const token = localStorage.getItem("token");
                 if(token)
                 {
-                    const response = await axios.get(`http://localhost:8080/api/messages?sender=${loggedInUser}&receiver=${selectedUser}`,
+                    const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/messages?sender=${loggedInUser}&receiver=${selectedUser}`,
                         {headers: { Authorization: `Bearer ${token}` }}
                     );
                     console.log("Retrieved Messages: ",response.data);
@@ -91,7 +91,7 @@ function Chat({selectedUser, profile, onBack, onLogout})
             {
                 const token = localStorage.getItem("token");
                 console.log('trying to connect...');
-                const socket = new SockJS(`http://localhost:8080/ws`);
+                const socket = new SockJS(`${process.env.REACT_APP_API_BASE_URL}/ws`);
                 const stompClient = Stomp.over(socket);
                 stompClientRef.current = stompClient;
                 stompClient.connect({
