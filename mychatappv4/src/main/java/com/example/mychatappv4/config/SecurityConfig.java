@@ -60,8 +60,8 @@ public class SecurityConfig
                 .authorizeHttpRequests(auth->auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // because browsers, not users, send OPTIONS
 //                        .requestMatchers("/auth/**").permitAll()    //
-                        .requestMatchers("/login").permitAll()  // because authentication must happen before authentication exists
-                        .requestMatchers("/register").permitAll()   // because authentication must happen before authentication exists
+                        .requestMatchers("/auth/login").permitAll()  // because authentication must happen before authentication exists
+                        .requestMatchers("/auth/register").permitAll()   // because authentication must happen before authentication exists
                         .requestMatchers("/ws/**").permitAll()
 //                        .requestMatchers("/api/**").permitAll()   // they must be authenticated. Only logged in users must see the chat.
                         .anyRequest().authenticated()
